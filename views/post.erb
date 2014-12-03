@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><%= @posts.at_css('header > h1').text %></title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/css/shop-item.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Demo Scrolling</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+	                         <a href="#">Fútbol</a>
+	                     </li>
+	                     <li>
+	                         <a href="#">Baloncesto</a>
+	                     </li>
+	                     <li>
+	                         <a href="#">Tenis</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-3">
+					<div data-spy="affix" style="width:17%">
+                <p class="lead">Más noticias</p>
+					 
+                <div class="list-group">
+						 
+						 <% @related.search("li").each do |x| %>
+						 	<a href="/post/<%= x.at_css('a') ['href'].gsub("http://www.elmundo.es/", "").split('?cid=')[0] %>" class="list-group-item"><%= x.text %></a>
+						 <% end %>
+                </div>
+            </div>
+				 </div>
+            <div class="col-md-9">
+					<div class="fromhere">
+						<div class="scroll">
+                <div class="thumbnail">
+						  <div class="caption-full">
+							  <h1><%= @posts.at_css('header > h1').text %></h1>
+							  
+					         <% foto = @posts.at_css('div.foto > img') %>
+					       	 <% if !foto.nil? %>
+
+								  
+	 							 <img class="img-responsive" src="<%= foto['src'] %>" alt="<%= foto['alt'] %>">
+	                      
+								<% else %>
+								
+								<% end %>
+								
+								<% fotoPie = @posts.at_css('div.foto > p.pie') %>
+								 <% if !fotoPie.nil? %>
+								 
+								   <p><%= fotoPie.text %></p>
+								<% else %>
+								
+								<% end %>
+								
+								 
+							
+									<% @posts.search("#tamano > p").each do |x| %>
+                        		<p class="lead"><%= x.text %></p>
+									<% end %>                     
+                    </div>
+
+                </div>
+
+                <div class="well">
+
+                    <div class="text-right">
+                        <a class="btn btn-success">Escribir un comentario</a>
+                    </div>
+                    <hr>
+  						<% @posts.search("#comentarios-usuarios > article").each do |x| %>
+                  		
+								
+	                     <div class="row">
+	                         <div class="col-md-12">
+										 <img alt="<%= x.at_css('header .autor').text %>" src="<%= x.at_css('header .avatar')['src'] %>">
+	                            <strong><%= x.at_css('header .autor').text %></strong>
+	                             <span class="pull-right"><small><%= x.at_css('header time').text %></small></span>
+	                             <p><%= x.at_css('div.texto-comentario p').text %><</p>
+	                         </div>
+	                     </div>
+
+	                     <hr>
+  						<% end %>
+						  
+                    
+						
+                  
+
+                </div>
+						 <% @related.search("li").each do |x| %>
+						 	<a class="jscroll-next" href="/post/<%= x.at_css('a') ['href'].gsub("http://www.elmundo.es/", "").split('?cid=')[0] %>">Siguiente artículo: <%= x.text %></a>
+						 <% end %>
+            </div>
+ </div> </div>
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+    <div class="container">
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Your Website 2014</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/bootstrap.min.js"></script>
+	 <script src="/js/scrolling.js"></script>
+		 <script>
+	 
+	 
+	 $('.scroll').jscroll({
+    	 loadingHtml: '<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">Cargando</span></div></div>',
+		 autoTrigger: true,
+		 padding: 100,
+		 nextSelector: 'a.jscroll-next',
+   	 contentSelector: '.fromhere'
+});
+</script>
+
+
+</body>
+
+</html>
